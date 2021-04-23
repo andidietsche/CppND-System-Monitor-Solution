@@ -28,8 +28,7 @@ vector<Process>& System::Processes() {
     process.Pid(pids);
     processes_.push_back(process);
   }
-  
-
+  std::sort(processes_.begin(),processes_.end()); //[](const Process a , const Process b){return a.CpuUtilization()> b.getcpuUtilization();}
   return processes_;
 }
 

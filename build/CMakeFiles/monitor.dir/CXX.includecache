@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+../include/format.h
+string
+-
+
 ../include/linux_parser.h
 fstream
 -
@@ -33,4 +37,6 @@ vector
 -
 linux_parser.h
 /home/alexdietsche/git/CppND-System-Monitor-Project-Updated/src/linux_parser.h
+format.h
+/home/alexdietsche/git/CppND-System-Monitor-Project-Updated/src/format.h
 

@@ -67,7 +67,7 @@ vector<int> LinuxParser::Pids() {
   closedir(directory);
   return pids;
 }
-
+// Done
 float LinuxParser::MemoryUtilization() {
   std::map<string, string> memdata;
   std::string line;
@@ -90,7 +90,7 @@ float LinuxParser::MemoryUtilization() {
   diff = memtotal - memfree;
   return diff / memtotal;
 }
-
+// Done
 long LinuxParser::UpTime() {//in seconds
   string line;
   string uptimestring, idletime;
@@ -107,12 +107,39 @@ long LinuxParser::UpTime() {//in seconds
 }
 
 long LinuxParser::Jiffies() {
-  return ActiveJiffies() + IdleJiffies();
+  return 0;
+  //ActiveJiffies() + IdleJiffies();
 }  // sum of Active and Idle jiffies
 
-// TODO: Read and return the number of active jiffies for a PID
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid [[maybe_unused]]) { return 0; }
+// Done
+long LinuxParser::ActiveJiffies(int pid) {  
+  //string line, word;
+  std::string line, word;
+  long total_time;
+  float utime, stime,cutime,cstime; //starttime
+  vector<string> statdata;
+  std::string stringpid = to_string(pid);
+  
+  std::ifstream stream(LinuxParser::kProcDirectory + stringpid +
+                       LinuxParser::kStatFilename);
+  if (stream.is_open()) {
+    while (std::getline(stream, line)) {
+      std::istringstream linestream(line);
+      while (linestream >> word) {
+        statdata.push_back(word);
+      }
+    }
+  }
+  utime = std::stof(statdata[13]);
+  stime = std::stof(statdata[14]);
+  cutime = std::stof(statdata[15]);
+  cstime = std::stof(statdata[16]);
+  //starttime = std::stof(statdata[21]);
+
+
+  total_time = utime + stime + cutime + cstime;
+  
+  return total_time; }
 
 long LinuxParser::ActiveJiffies() {
   return 0;
@@ -208,11 +235,14 @@ string LinuxParser::Command(int pid) {
   filename << kProcDirectory << "/" << pid << "/" << kCmdlineFilename;
   std::ifstream stream(filename.str());
   if (stream.is_open()) {
-    std::getline(stream, line);
+    while(std::getline(stream, line)){
+      std::istringstream linestream(line);
+      linestream >> cmdline;
+    }
   } else {
     return "N/A";
   }
-  return line;
+  return cmdline;
 }
 // Done: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
@@ -226,7 +256,7 @@ string LinuxParser::Ram(int pid) {
       std::istringstream linestream(line);
       while (linestream >> key >> value) {
         if (key == "VmSize:") {
-          return to_string(std::stoi(value) / 1024);
+          return to_string(std::stol(value) / 1024);
         }
       }
     }
@@ -259,7 +289,7 @@ string LinuxParser::Uid(int pid) {
 
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::User(int pid) {
-  std::string line, user;
+  std::string line, user, shortuser;
   std::ifstream stream(kPasswordPath);
   std::stringstream searchstring;
   searchstring << ":x:" + LinuxParser::Uid(pid);
@@ -274,13 +304,14 @@ string LinuxParser::User(int pid) {
       else continue;
     }
   }
-  return user;
+  shortuser = user.substr(0,4); // only the first 4 character, otherwise it would write into CPU column
+  return shortuser;
 }
 
 // Done: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid) {
-  long uptime{0};
+  long uptime;
   string line, word;
   vector<string> data;
   std::stringstream filename;
@@ -293,8 +324,7 @@ long LinuxParser::UpTime(int pid) {
         data.push_back(word);
       }
     }
-    uptime = std::stol(data[21]) / sysconf(_SC_CLK_TCK);  // to get seconds
+    uptime = (UpTime() - (std::stof(data[21]) / sysconf(_SC_CLK_TCK)));  // to get seconds, use stof instead of stol to prevent 0
   }
-
   return uptime;
 }

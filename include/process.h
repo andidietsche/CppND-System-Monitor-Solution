@@ -11,6 +11,7 @@ class Process {
  void Pid(int pids){
      pid_ = pids;
  }
+ //float getcpuUtilization();
   int Pid();                               // TODO: See src/process.cpp
   std::string User();                      // TODO: See src/process.cpp
   std::string Command();                   // TODO: See src/process.cpp
@@ -26,4 +27,4 @@ class Process {
 
 };
 
-#endif
+#endif;
