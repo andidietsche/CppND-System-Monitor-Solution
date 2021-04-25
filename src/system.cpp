@@ -17,18 +17,22 @@ using std::size_t;
 using std::string;
 using std::vector;
 
-
-
 Processor& System::Cpu() { return cpu_; }
 
 vector<Process>& System::Processes() {
   Process process;
   processes_.clear();  // clear for update
-  for (int pids : LinuxParser::Pids()) {
-    process.Pid(pids);
-    processes_.push_back(process);
+
+  for (const int pid : LinuxParser::Pids()) {
+    process.setPid(pid);
+    process.setUser(pid);
+    process.setCommand(pid);
+    process.setCpuUilization();  // inititalizing all member variables
+
+    processes_.emplace_back(process);  // include all processes in vector
   }
-  std::sort(processes_.begin(),processes_.end()); //[](const Process a , const Process b){return a.CpuUtilization()> b.getcpuUtilization();}
+  std::sort(processes_.begin(), processes_.end());
+
   return processes_;
 }
 

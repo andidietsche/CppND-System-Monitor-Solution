@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../include/format.h
-string
--
-
 ../include/linux_parser.h
 fstream
 -
@@ -18,25 +14,17 @@ regex
 string
 -
 
-../include/process.h
-string
+/home/alexdietsche/git/CppND-System-Monitor-Project-Updated/src/linux_parser.cpp
+linux_parser.h
+/home/alexdietsche/git/CppND-System-Monitor-Project-Updated/src/linux_parser.h
+dirent.h
 -
-
-/home/alexdietsche/git/CppND-System-Monitor-Project-Updated/src/process.cpp
-process.h
-/home/alexdietsche/git/CppND-System-Monitor-Project-Updated/src/process.h
 unistd.h
 -
-cctype
--
-sstream
+map
 -
 string
 -
 vector
 -
-linux_parser.h
-/home/alexdietsche/git/CppND-System-Monitor-Project-Updated/src/linux_parser.h
-format.h
-/home/alexdietsche/git/CppND-System-Monitor-Project-Updated/src/format.h
 
