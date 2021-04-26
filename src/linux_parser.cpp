@@ -123,7 +123,6 @@ long LinuxParser::Jiffies() {
 
 // Done
 long LinuxParser::ActiveJiffies(int pid) {
-  // string line, word;
   std::string line, word;
   long total_time;
   float utime, stime, cutime, cstime;  // starttime
@@ -143,7 +142,7 @@ long LinuxParser::ActiveJiffies(int pid) {
     stime = std::stof(statdata[14]);
     cutime = std::stof(statdata[15]);
     cstime = std::stof(statdata[16]);
-    // starttime = std::stof(statdata[21]);
+  
 
     total_time = utime + stime + cutime + cstime;
 
@@ -151,37 +150,6 @@ long LinuxParser::ActiveJiffies(int pid) {
   }
 
   return 0;
-}
-// Didn't used
-long LinuxParser::ActiveJiffies() {
-  return 0;
-  // vector<string> Jifs = LinuxParser::CpuUtilization();  // stores every thing
-  // from proc/stat's
-  //                                     // first line as a string
-  // }
-  // long ActiveJiffies = std::stol(Jifs[LinuxParser::kUser_]) +
-  // std::stol(Jifs[LinuxParser::kNice_]) +
-  // std::stol(Jifs[LinuxParser::kSystem_]) +
-  //                      std::stol(Jifs[LinuxParser::kIRQ_]) +
-  //                      std::stol(Jifs[LinuxParser::kSoftIRQ_]) +
-  //                      std::stol(Jifs[LinuxParser::kSteal_]);
-  // return ActiveJiffies;
-}
-// Didn't used
-long LinuxParser::IdleJiffies() {
-  return 0;  // idle+ iowait
-  // std::string name, user, nice, system, idle, iowait, irq, softirq, steal,
-  //     guest, guest_size, line;
-
-  // std::ifstream stream(kProcDirectory + kStatFilename);
-  // if (stream.is_open()) {
-  //   std::getline(stream, line);
-  //   std::istringstream linestream(line);
-  //   linestream >> name >> user >> nice >> system >> idle >> iowait >> irq >>
-  //       softirq >> steal >> guest >> guest_size;
-  // }
-  // long IdleJiffies = std::stol(idle) + std::stol(iowait);
-  // return IdleJiffies;
 }
 
 vector<string> LinuxParser::CpuUtilization() {
@@ -265,6 +233,7 @@ string LinuxParser::Ram(int pid) {
   } else {
     return "N/A";
   }
+  return 0;
 }
 
 string LinuxParser::Uid(int pid) {
